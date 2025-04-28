@@ -94,8 +94,8 @@ function renderRooms(rooms) {
             <div class="room-info">
                 <h3>Room ${room.room_number}</h3>
                 <p>Type: ${room.room_type}</p>
-                <p>Occupancy: ${room.occupancy_limit}</p>
-                <p>Price: $${room.price_per_semester}/semester</p>
+                <p>Occupancy: ${room.occupancy}</p>
+                <p>Price: $${room.price}/semester</p>
                 <p>Description: ${room.description || 'No description'}</p>
             </div>
             <div class="room-actions">
