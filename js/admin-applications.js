@@ -97,8 +97,8 @@ function renderApplications(applications, isLoading = false) {
     tbody.innerHTML = applications.map(app => `
         <tr>
             <td>${app.id}</td>
-            <td>${app.user_name || '-'}</td>
-            <td>${app.user_email || '-'}</td>
+            <td>${app.name || '-'}</td>
+            <td>${app.email || '-'}</td>
             <td>${app.room_number || '-'}</td>
             <td><span class="status-badge status-${app.status.toLowerCase()}">${app.status}</span></td>
             <td>${new Date(app.created_at).toLocaleDateString()}</td>
@@ -138,11 +138,11 @@ async function viewApplication(appId) {
     details.innerHTML = `
         <div class="detail-group">
             <label>Student:</label>
-            <p>${application.user_name || '-'}</p>
+            <p>${application.name || '-'}</p>
         </div>
         <div class="detail-group">
             <label>Email:</label>
-            <p>${application.user_email || '-'}</p>
+            <p>${application.email || '-'}</p>
         </div>
         <div class="detail-group">
             <label>Current Room:</label>
@@ -154,7 +154,7 @@ async function viewApplication(appId) {
         </div>
         <div class="detail-group">
             <label>Applied Date:</label>
-            <p>${new Date(application.created_at).toLocaleString()}</p>
+            <p>${new Date(application.application_date).toLocaleString()}</p>
         </div>
     `;
 
