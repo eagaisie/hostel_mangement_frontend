@@ -1,5 +1,6 @@
-const API_URL = 'https://hostel-backend-wxqs.onrender.com/api';
-
+if (typeof API_URL === 'undefined') {
+    const API_URL = 'https://hostel-backend-wxqs.onrender.com/api';
+}
 // Check admin access
 async function checkAdminAccess() {
     try {
