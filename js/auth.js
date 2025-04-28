@@ -3,7 +3,7 @@
 // Base API URL
 const API_URL = 'https://hostel-backend-wxqs.onrender.com/api';
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   // ── Form containers
   const loginContainer         = document.getElementById('loginForm');
   const registerContainer      = document.getElementById('registerForm');
@@ -114,6 +114,7 @@ async function handleLogin(e) {
 
     if (res.ok) {
       const data = await res.json();
+      localStorage.setItem('token', data.token);
       // Redirect based on role
       if (data.user.role === 'admin') {
         window.location.href = 'admin-dashboard.html';

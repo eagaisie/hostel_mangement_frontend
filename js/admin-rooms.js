@@ -5,7 +5,13 @@ if (typeof API_URL === 'undefined') {
 // Check admin access
 async function checkAdminAccess() {
     try {
-        const res = await fetch(`${API_URL}/auth/me`, { credentials: 'include' });
+        const res = await fetch(`${API_URL}/auth/me`,{
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
+            credentials: 'include'
+        });
         if (!res.ok) {
             window.location.href = 'index.html';
             return;
