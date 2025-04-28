@@ -91,10 +91,11 @@ document.getElementById('roomForm').addEventListener('submit', async (e) => {
         const roomData = {
             room_number: form.room_number.value,
             room_type: form.room_type.value,
-            occupancy_limit: form.occupancy_limit.value,
-            price_per_semester: form.price_per_semester.value,
+            occupancy: form.occupancy_limit.value,
+            price: form.price_per_semester.value,
             description: form.description.value,
-            image_url: form.image_url.value
+            status: 'available',
+            // image_url: form.image_url.value
         };
         
         if (await createRoom(roomData)) {
