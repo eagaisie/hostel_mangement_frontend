@@ -10,7 +10,12 @@ function getRoomIdFromUrl() {
 
 // Fetch current user info
 async function fetchUser() {
-    const res = await fetch(`${API_URL}/auth/me`, { credentials: 'include' });
+    const res = await fetch(`${API_URL}/auth/me`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+    });
     if (!res.ok) return null;
     return await res.json();
 }
