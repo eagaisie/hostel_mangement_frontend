@@ -68,7 +68,10 @@ async function handleApplicationSubmit(e) {
     try {
         const res = await fetch(`${API_URL}/applications`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
             credentials: 'include',
             body: JSON.stringify({
                 room_id: roomId,
