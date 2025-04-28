@@ -3,7 +3,12 @@ const API_URL = 'https://hostel-backend-wxqs.onrender.com/api';
 // Check admin access
 async function checkAdminAccess() {
     try {
-        const res = await fetch(`${API_URL}/auth/me`, { credentials: 'include' });
+        const res = await fetch(`${API_URL}/auth/me`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
+        });
         if (!res.ok) {
             window.location.href = 'index.html';
             return;
@@ -24,7 +29,12 @@ async function checkAdminAccess() {
 // Fetch all applications
 async function fetchApplications() {
     try {
-        const res = await fetch(`${API_URL}/applications`, { credentials: 'include' });
+        const res = await fetch(`${API_URL}/applications`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
+        });
         if (!res.ok) throw new Error('Failed to fetch applications');
         return await res.json();
     } catch (err) {
@@ -36,7 +46,12 @@ async function fetchApplications() {
 // Fetch all rooms
 async function fetchRooms() {
     try {
-        const res = await fetch(`${API_URL}/rooms`, { credentials: 'include' });
+        const res = await fetch(`${API_URL}/rooms`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
+        });
         if (!res.ok) throw new Error('Failed to fetch rooms');
         return await res.json();
     } catch (err) {
@@ -50,8 +65,10 @@ async function updateApplicationStatus(appId, status, roomId = null) {
     try {
         const res = await fetch(`${API_URL}/applications/${appId}`, {
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
             body: JSON.stringify({ status, room_id: roomId })
         });
         if (!res.ok) throw new Error('Failed to update application');
@@ -63,8 +80,14 @@ async function updateApplicationStatus(appId, status, roomId = null) {
 }
 
 // Render applications table
-function renderApplications(applications) {
+function renderApplications(applications, isLoading = false) {
     const tbody = document.getElementById('applicationsTableBody');
+    
+    if (isLoading) {
+        tbody.innerHTML = '<tr><td colspan="7" class="loading">Loading applications...</td></tr>';
+        return;
+    }
+    
     if (!applications.length) {
         tbody.innerHTML = '<tr><td colspan="7" class="no-data">No applications found</td></tr>';
         return;
@@ -182,11 +205,28 @@ function filterApplications(applications, status, search) {
 
 // Load and display applications
 async function loadApplications() {
-    const applications = await fetchApplications();
-    const statusFilter = document.getElementById('statusFilter').value;
-    const searchInput = document.getElementById('searchInput').value;
-    const filteredApplications = filterApplications(applications, statusFilter, searchInput);
-    renderApplications(filteredApplications);
+    try {
+        // Show loading state
+        renderApplications([], true);
+        
+        const applications = await fetchApplications();
+        const statusFilter = document.getElementById('statusFilter').value;
+        const searchInput = document.getElementById('searchInput').value;
+        const filteredApplications = filterApplications(applications, statusFilter, searchInput);
+        
+        // Render the filtered applications
+        renderApplications(filteredApplications);
+        
+        // Update application count if element exists
+        const countElement = document.getElementById('applicationCount');
+        if (countElement) {
+            countElement.textContent = filteredApplications.length;
+        }
+    } catch (error) {
+        console.error('Error loading applications:', error);
+        const tbody = document.getElementById('applicationsTableBody');
+        tbody.innerHTML = '<tr><td colspan="7" class="error">Failed to load applications. Please try again.</td></tr>';
+    }
 }
 
 // Event listeners
@@ -198,7 +238,9 @@ document.getElementById('logoutBtn').addEventListener('click', async () => {
     try {
         const res = await fetch(`${API_URL}/auth/logout`, {
             method: 'POST',
-            credentials: 'include'
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
         });
         if (res.ok) {
             window.location.href = 'index.html';
