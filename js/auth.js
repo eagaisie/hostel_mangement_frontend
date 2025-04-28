@@ -169,6 +169,7 @@ async function handleLogout() {
     await fetch(`${API_URL}/auth/logout`, { method: 'POST', credentials: 'include' });
   } finally {
     updateUIForLoggedOutUser();
+    localStorage.removeItem('token');
     window.location.href = '/index.html';
   }
 }
