@@ -101,7 +101,7 @@ function renderApplications(applications, isLoading = false) {
             <td>${app.email || '-'}</td>
             <td>${app.room_number || '-'}</td>
             <td><span class="status-badge status-${app.status.toLowerCase()}">${app.status}</span></td>
-            <td>${new Date(app.created_at).toLocaleDateString()}</td>
+            <td>${new Date(app.application_date).toLocaleDateString()}</td>
             <td>
                 <button class="btn btn-sm btn-info" onclick="viewApplication(${app.id})">View</button>
             </td>
