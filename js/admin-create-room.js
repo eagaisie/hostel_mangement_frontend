@@ -33,7 +33,26 @@ function updateImagePreview() {
     const preview = document.getElementById('imagePreview');
     
     if (imageUrl) {
-        preview.innerHTML = `<img src="${imageUrl}" alt="Room Preview" style="max-width: 200px; margin-top: 10px;">`;
+        // Show loading state
+        preview.innerHTML = '<div class="loading">Loading preview...</div>';
+        
+        // Create image element
+        const img = new Image();
+        img.src = imageUrl;
+        img.alt = 'Room Preview';
+        img.style.maxWidth = '200px';
+        img.style.marginTop = '10px';
+        
+        // Handle image load
+        img.onload = () => {
+            preview.innerHTML = '';
+            preview.appendChild(img);
+        };
+        
+        // Handle image error
+        img.onerror = () => {
+            preview.innerHTML = '<div class="error">Failed to load image preview</div>';
+        };
     } else {
         preview.innerHTML = '';
     }
