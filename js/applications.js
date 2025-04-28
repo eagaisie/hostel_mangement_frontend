@@ -3,7 +3,12 @@ if (typeof API_URL === 'undefined') {
 }
 
 async function fetchApplications() {
-    const res = await fetch(`${API_URL}/applications/my-applications`, { credentials: 'include' });
+    const res = await fetch(`${API_URL}/applications/my-applications`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+    });
     if (!res.ok) return [];
     return await res.json();
 }
