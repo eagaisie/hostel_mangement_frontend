@@ -76,8 +76,8 @@ async function handleApplicationSubmit(e) {
                 room_id: roomId,
                 special_needs: specialNeeds,
                 additional_notes: additionalNotes,
-                academic_year: new Date().getFullYear(),
-                semester: 'fall'
+                application_date: new Date().toISOString(),
+                status: 'pending'
             })
         });
         const data = await res.json();
