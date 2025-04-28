@@ -1,5 +1,5 @@
 // API Configuration
-const API_URL = 'http://localhost:5000/api';
+const API_URL = 'https://hostel-backend-wxqs.onrender.com/api';
 
 // Load hostel preview on dashboard
 async function loadHostelPreview() {
