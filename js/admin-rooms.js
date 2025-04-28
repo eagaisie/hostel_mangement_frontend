@@ -10,7 +10,6 @@ async function checkAdminAccess() {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
             },
-            credentials: 'include'
         });
         if (!res.ok) {
             window.location.href = 'index.html';

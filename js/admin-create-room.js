@@ -4,7 +4,12 @@ const ROOM_API_URL = window.API_URL || 'https://hostel-backend-wxqs.onrender.com
 // Check admin access
 async function checkAdminAccess() {
     try {
-        const res = await fetch(`${ROOM_API_URL}/auth/me`, { credentials: 'include' });
+        const res = await fetch(`${ROOM_API_URL}/auth/me`,{
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
+        });
         if (!res.ok) {
             window.location.href = 'index.html';
             return;
