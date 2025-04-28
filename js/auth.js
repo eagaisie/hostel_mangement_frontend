@@ -83,7 +83,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 async function checkAuth() {
   try {
-    const res = await fetch(`${API_URL}/auth/me`, { credentials: 'include' });
+    const res = await fetch(`${API_URL}/auth/me`, {
+      method: 'GET',
+      headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+      },
+  });
     if (res.ok) {
       const user = await res.json();
       updateUIForLoggedInUser(user);
