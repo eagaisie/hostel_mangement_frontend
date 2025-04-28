@@ -85,11 +85,11 @@ function displayRooms(rooms) {
                 <h3 class="room-title">${room.room_number}</h3>
                 <p class="room-description">${room.description || ''}</p>
                 <div class="room-details">
-                    <p><strong>Occupancy:</strong> ${room.occupancy_limit || '-'} person(s)</p>
+                    <p><strong>Occupancy:</strong> ${room.occupancy || '-'} person(s)</p>
                     <p><strong>Room Type:</strong> ${room.room_type || '-'}</p>
                 </div>
                 <div class="room-price">
-                    $${room.price_per_semester || '-'} per semester
+                    $${room.price || '-'} per semester
                 </div>
                 <div class="room-actions">
                     <button class="btn-book" onclick="window.location.href='application.html?roomId=${room.id}'">Apply</button>
@@ -146,7 +146,7 @@ async function showRoomDetails(roomId) {
                 <p class="room-description-full">${room.description || ''}</p>
                 <div class="room-price-full">
                     <h3>Pricing</h3>
-                    <p>$${room.price_per_semester || '-'} per semester</p>
+                    <p>$${room.price || '-'} per semester</p>
                 </div>
                 <button class="btn-book" onclick="bookRoom('${room.id}')">Book Now</button>
             </div>
