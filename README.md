@@ -105,7 +105,7 @@ The Hostel Management System is a web application designed to streamline hostel 
 ## Admin Access
 
 - **Email**: arnold@gmail.com
-- **Password**: test
+- **Password**: 1234
 
 ## Contributing
 
