@@ -70,12 +70,20 @@ async function updateApplicationStatus(appId, status, roomId = null) {
     return res.ok;
 }
 
-function renderApplications(applications, rooms) {
+// Render applications
+function renderApplications(applications, rooms, isLoading = false) {
     const list = document.getElementById('adminApplicationsList');
+    
+    if (isLoading) {
+        list.innerHTML = '<div class="loading-message">Loading applications...</div>';
+        return;
+    }
+    
     if (!applications.length) {
         list.innerHTML = '<div class="no-results">No applications found.</div>';
         return;
     }
+    
     list.innerHTML = applications.map(app => {
         const roomOptions = rooms.map(room => `<option value="${room.id}" ${app.room_id === room.id ? 'selected' : ''}>${room.room_number}</option>`).join('');
         return `
@@ -246,13 +254,20 @@ async function deleteRoom(roomId) {
     }
 }
 
-// Update renderRooms to display image if available
-function renderRooms(rooms, applications) {
+// Render rooms
+function renderRooms(rooms, applications, isLoading = false) {
     const list = document.getElementById('adminRoomsList');
+    
+    if (isLoading) {
+        list.innerHTML = '<div class="loading-message">Loading rooms...</div>';
+        return;
+    }
+    
     if (!rooms.length) {
         list.innerHTML = '<div class="no-results">No rooms found.</div>';
         return;
     }
+    
     list.innerHTML = rooms.map(room => {
         const assigned = applications.filter(app => app.room_id === room.id && app.status === 'Approved');
         return `
@@ -291,10 +306,39 @@ async function rejectApplication(appId) {
     loadApplicationsAndRooms();
 }
 
+// Load applications and rooms
 async function loadApplicationsAndRooms() {
-    const [applications, rooms] = await Promise.all([fetchApplications(), fetchRooms()]);
-    renderApplications(applications, rooms);
-    renderRooms(rooms, applications);
+    try {
+        // Show loading state
+        renderApplications([], [], true);
+        renderRooms([], [], true);
+        
+        // Fetch data
+        const [applications, rooms] = await Promise.all([
+            fetchApplications(),
+            fetchRooms()
+        ]);
+        
+        // Render data
+        renderApplications(applications, rooms);
+        renderRooms(rooms, applications);
+        
+        // Update counts if elements exist
+        const appCountElement = document.getElementById('applicationCount');
+        const roomCountElement = document.getElementById('roomCount');
+        
+        if (appCountElement) {
+            appCountElement.textContent = applications.length;
+        }
+        if (roomCountElement) {
+            roomCountElement.textContent = rooms.length;
+        }
+    } catch (error) {
+        console.error('Error loading data:', error);
+        const errorMessage = 'Failed to load data. Please try again.';
+        document.getElementById('adminApplicationsList').innerHTML = `<div class="error-message">${errorMessage}</div>`;
+        document.getElementById('adminRoomsList').innerHTML = `<div class="error-message">${errorMessage}</div>`;
+    }
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
