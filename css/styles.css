@@ -28,6 +28,10 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
+    background-image: url('../images/background.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     background-color: var(--light-color);
     color: var(--dark-color);
     min-height: 100vh;
